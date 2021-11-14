@@ -1,6 +1,7 @@
 import json
 import os
 import time
+import ssl
 from urllib.request import urlopen, Request
 
 token = os.getenv('TOKEN')
@@ -25,12 +26,15 @@ def influx_query(query_str: str):
     except Exception as e:
         print(e)
 
+httprequest = Request(api_url, headers={"Accept": "application/json"})
+
+ctx = ssl.create_default_context()
+ctx.check_hostname = False
+ctx.verify_mode = ssl.CERT_NONE
 
 while True:
     try:
-        httprequest = Request(api_url, headers={"Accept": "application/json"})
-
-        with urlopen(httprequest) as response:
+        with urlopen(httprequest, context=ctx) as response:
             print(response.status)
 
             resp = response.read().decode()

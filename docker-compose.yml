@@ -6,3 +6,4 @@ services:
     - .env
     container_name: airQuialityScrapper-container
     restart: always
+    network_mode: host
