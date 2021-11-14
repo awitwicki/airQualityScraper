@@ -1,0 +1,8 @@
+version: "3.3"
+services:
+  air_quiality_scrapper:
+    build: .
+    env_file:
+    - .env
+    container_name: airQuialityScrapper-container
+    restart: always
