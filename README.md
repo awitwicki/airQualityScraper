@@ -15,3 +15,5 @@ It parse air quality data from the [aqicn.org](https://aqicn.org/data-platform/t
     * `INTERVAL=300` - interval between requests
 
 3. Then run in console command: `docker-compose up -d`
+
+<img src=".github/air_quality_table.png">
