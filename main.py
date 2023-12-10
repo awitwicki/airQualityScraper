@@ -2,7 +2,10 @@ import json
 import os
 import time
 import ssl
+import sys
 from urllib.request import urlopen, Request
+
+print('Scrapper has started', file=sys.stderr)
 
 token = os.getenv('TOKEN')
 city = os.getenv('CITY_NAME', 'kyiv')
@@ -24,7 +27,7 @@ def influx_query(query_str: str):
 
         urlopen(httprequest)
     except Exception as e:
-        print(e)
+        print(e, file=sys.stderr)
 
 httprequest = Request(api_url, headers={"Accept": "application/json"})
 
@@ -35,10 +38,10 @@ ctx.verify_mode = ssl.CERT_NONE
 while True:
     try:
         with urlopen(httprequest, context=ctx) as response:
-            print(response.status)
+            print(response.status, file=sys.stderr)
 
             resp = response.read().decode()
-            print(resp[:100])
+            print(resp[:100], file=sys.stderr)
 
             data = json.loads(resp)['data']['iaqi']
 
@@ -46,10 +49,10 @@ while True:
 
             data_str = f'iot,room=city,device=api,sensor=airquality_api {values}'
 
-            print(data_str)
+            print(data_str, file=sys.stderr)
             influx_query(data_str)
 
     except Exception as e:
-        print(e)
+        print(e, file=sys.stderr)
 
     time.sleep(interval)
